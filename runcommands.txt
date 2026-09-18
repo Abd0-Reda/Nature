@@ -1,5 +1,0 @@
-cd "D:\projects\ITI Web\Django\E commerce"
-
-& "D:\projects\ITI Web\Django\venv\Scripts\Activate.ps1"
-
-python manage.py runserver
