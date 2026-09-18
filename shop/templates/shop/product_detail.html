@@ -1,0 +1,76 @@
+{% extends 'shop/base.html' %} {% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card mb-4 p-4">
+      <h3 class="mb-3">{{ product.name }}</h3>
+      {% if product.image %}
+      <img src="{{ product.image.url }}" class="img-fluid mb-3" alt="{{ product.name }}" />
+      {% endif %}
+
+      <p><strong>Description:</strong> {{ product.description }}</p>
+      <p><strong>Price:</strong> {{ product.price }} EGP</p>
+      <p><strong>Category:</strong> {{ product.category }}</p>
+      <p><strong>Average Rating:</strong> {{ product.average_rating }} ⭐</p>
+
+      {% if user.is_authenticated %}
+
+      
+      <button type="button" class="btn btn-success w-100 mb-2" data-bs-toggle="modal"
+        data-bs-target="#quantityModal{{ product.id }}">
+        Add to Cart
+      </button>
+      <div class="modal fade" id="quantityModal{{ product.id }}" tabindex="-1"
+        aria-labelledby="quantityModalLabel{{ product.id }}" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <form method="post" action="{% url 'add_to_cart' product.id %}">
+              {% csrf_token %}
+              <div class="modal-header">
+                <h5 class="modal-title" id="quantityModalLabel{{ product.id }}">
+                  Add {{ product.name }} to Cart
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <label for="quantity{{ product.id }}" class="form-label">Quantity:</label>
+                <input type="number" name="quantity" id="quantity{{ product.id }}" class="form-control" min="1"
+                  value="1" required />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <a href="{% url 'add_review' product.id %}" class="btn btn-outline-secondary mt-2 ms-2">Leave a Review</a>
+      {% else %}
+      <p class="text-muted mt-3">
+        <a href="{% url 'login' %}">Login</a> to add this product to your cart
+        or write a review.
+      </p>
+      {% endif %}
+    </div>
+
+    <div class="card p-4">
+      <h5 class="mb-3">Reviews</h5>
+      <ul class="list-unstyled">
+        {% for review in reviews %}
+        <li class="mb-2 border-bottom pb-2">
+          <strong>{{ review.user.username }}</strong> – {{ review.rating }}
+          ⭐<br />
+          <small>{{ review.comment }}</small>
+        </li>
+        {% empty %}
+        <li>No reviews yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

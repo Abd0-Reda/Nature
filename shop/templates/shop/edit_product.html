@@ -1,0 +1,15 @@
+{% extends 'shop/base.html' %} {% load crispy_forms_tags %} {% block title
+%}Edit Product {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 custom-shadow bg-white p-4 rounded">
+    <h3 class="mb-4 text-center">Edit Product</h3>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} {{ form|crispy }}
+      <div class="text-center mt-3">
+        <button type="submit" class="btn btn-secondary">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

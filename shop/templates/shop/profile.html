@@ -1,0 +1,30 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">My Products</h2>
+
+{% if products %}
+<div class="row">
+  {% for product in products %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}"
+        style="height: 200px; object-fit: cover" />
+      {% endif %} <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.price }} EGP</p>
+        <div class="mt-auto d-grid gap-2">
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-primary">View</a>
+          <a href="{% url 'edit_product' product.id %}" class="btn btn-outline-success">Edit</a>
+          <a href="{% url 'delete_product' product.id %}" class="btn btn-outline-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">You haven't added any products yet.</p>
+{% endif %}
+{% endblock %}

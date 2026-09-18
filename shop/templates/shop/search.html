@@ -1,0 +1,68 @@
+{% extends 'shop/base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Search Results{% if category %} for "{{ category }}"{% endif %}</h2>
+
+{% if products %}
+<div class="row" id="products">
+  {% for product in products %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}"
+        style="height: 200px; object-fit: cover" />
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.price }} EGP</p>
+
+        <p class="card-text">
+          ⭐ {{ product.average_rating }} / 5 ({{ product.reviews_count }} reviews)
+        </p>
+        <div class="mt-auto">
+          <a href="{% url 'product_detail' product.id %}" class="btn btn-outline-secondary w-100 mb-2">Details</a>
+          <button type="button" class="btn btn-success w-100 mb-2" data-bs-toggle="modal"
+            data-bs-target="#quantityModal{{ product.id }}">
+            Add to Cart
+          </button>
+          <div class="modal fade" id="quantityModal{{ product.id }}" tabindex="-1"
+            aria-labelledby="quantityModalLabel{{ product.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form method="post" action="{% url 'add_to_cart' product.id %}">
+                  {% csrf_token %}
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="quantityModalLabel{{ product.id }}">
+                      Add {{ product.name }} to Cart
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <label for="quantity{{ product.id }}" class="form-label">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity{{ product.id }}" class="form-control" min="1"
+                      value="1" required />
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                      Cancel
+                    </button>
+                    <button type="submit" class="btn btn-success">Add to Cart</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center">
+    <p>No products available.</p>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-muted">No products found for this category.</p>
+{% endif %}
+{% endblock %}

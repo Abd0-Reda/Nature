@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: #134e4a;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      background-color: #0f403d;
+    }
+
+    .footer {
+      font-size: 13px;
+      color: #777;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Hi {{ user.username }} </h2>
+    <p>Thank you for signing up!</p>
+    <p>Please confirm your email address by clicking the button below:</p>
+
+    <a href="http://{{ domain }}{% url 'activate' uid=uid token=token %}" class="btn" target="_blank" rel="noopener">Activate your
+      account</a>
+
+    <p class="footer">
+      If the button doesn't work, copy and paste this link in your browser:
+      <br />
+      http://{{ domain }}{% url 'activate' uid=uid token=token %}
+    </p>
+  </div>
+</body>
+
+</html>
